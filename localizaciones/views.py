@@ -5,9 +5,8 @@ from .models import Departamento, Municipio, Barrio, Comuna, PuestoVotacion
 from .serializers import DepartamentoSerializer, MunicipioSerializer, BarrioSerializer, ComunaSerializer, PuestoVotacionSerializer
 from rest_framework.permissions import IsAuthenticated
 
+# Departamentos
 
-
-#Departamentos
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -19,6 +18,7 @@ def departamento_list(request):
     else:
         return Response({'error': 'No tienes permisos para acceder a esta información'}, status=status.HTTP_403_FORBIDDEN)
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def departamento_detail(request, pk):
@@ -28,6 +28,7 @@ def departamento_detail(request, pk):
         return Response(serializer.data)
     except Departamento.DoesNotExist:
         return Response({'error': 'El departamento no existe'}, status=status.HTTP_404_NOT_FOUND)
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -41,13 +42,15 @@ def departamento_create(request):
     else:
         return Response({'error': 'No tienes permisos para crear un nuevo departamento'}, status=status.HTTP_403_FORBIDDEN)
 
+
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def departamento_update(request, pk):
     try:
         departamento = Departamento.objects.get(pk=pk)
         if hasattr(request.user, 'userprofile') and request.user.userprofile.is_lider:
-            serializer = DepartamentoSerializer(departamento, data=request.data)
+            serializer = DepartamentoSerializer(
+                departamento, data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data)
@@ -56,6 +59,7 @@ def departamento_update(request, pk):
             return Response({'error': 'No tienes permisos para actualizar este departamento'}, status=status.HTTP_403_FORBIDDEN)
     except Departamento.DoesNotExist:
         return Response({'error': 'El departamento no existe'}, status=status.HTTP_404_NOT_FOUND)
+
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
@@ -70,7 +74,8 @@ def departamento_delete(request, pk):
     except Departamento.DoesNotExist:
         return Response({'error': 'El departamento no existe'}, status=status.HTTP_404_NOT_FOUND)
 
-#Municipios
+# Municipios
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -82,6 +87,7 @@ def municipio_list(request):
     else:
         return Response({'error': 'No tienes permisos para acceder a esta información'}, status=status.HTTP_403_FORBIDDEN)
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def municipio_detail(request, pk):
@@ -91,6 +97,7 @@ def municipio_detail(request, pk):
         return Response(serializer.data)
     except Municipio.DoesNotExist:
         return Response({'error': 'El municipio no existe'}, status=status.HTTP_404_NOT_FOUND)
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -103,6 +110,7 @@ def municipio_create(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response({'error': 'No tienes permisos para crear un nuevo municipio'}, status=status.HTTP_403_FORBIDDEN)
+
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -120,6 +128,7 @@ def municipio_update(request, pk):
     except Municipio.DoesNotExist:
         return Response({'error': 'El municipio no existe'}, status=status.HTTP_404_NOT_FOUND)
 
+
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def municipio_delete(request, pk):
@@ -132,8 +141,9 @@ def municipio_delete(request, pk):
             return Response({'error': 'No tienes permisos para eliminar este municipio'}, status=status.HTTP_403_FORBIDDEN)
     except Municipio.DoesNotExist:
         return Response({'error': 'El municipio no existe'}, status=status.HTTP_404_NOT_FOUND)
-    
-#Barrios
+
+# Barrios
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -145,6 +155,7 @@ def barrio_list(request):
     else:
         return Response({'error': 'No tienes permisos para acceder a esta información'}, status=status.HTTP_403_FORBIDDEN)
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def barrio_detail(request, pk):
@@ -154,6 +165,7 @@ def barrio_detail(request, pk):
         return Response(serializer.data)
     except Barrio.DoesNotExist:
         return Response({'error': 'El barrio no existe'}, status=status.HTTP_404_NOT_FOUND)
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -166,6 +178,7 @@ def barrio_create(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response({'error': 'No tienes permisos para crear un nuevo barrio'}, status=status.HTTP_403_FORBIDDEN)
+
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -183,6 +196,7 @@ def barrio_update(request, pk):
     except Barrio.DoesNotExist:
         return Response({'error': 'El barrio no existe'}, status=status.HTTP_404_NOT_FOUND)
 
+
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def barrio_delete(request, pk):
@@ -195,8 +209,9 @@ def barrio_delete(request, pk):
             return Response({'error': 'No tienes permisos para eliminar este barrio'}, status=status.HTTP_403_FORBIDDEN)
     except Barrio.DoesNotExist:
         return Response({'error': 'El barrio no existe'}, status=status.HTTP_404_NOT_FOUND)
-    
-#Comunas
+
+# Comunas
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -208,6 +223,7 @@ def comuna_list(request):
     else:
         return Response({'error': 'No tienes permisos para acceder a esta información'}, status=status.HTTP_403_FORBIDDEN)
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def comuna_detail(request, pk):
@@ -217,6 +233,7 @@ def comuna_detail(request, pk):
         return Response(serializer.data)
     except Comuna.DoesNotExist:
         return Response({'error': 'La comuna no existe'}, status=status.HTTP_404_NOT_FOUND)
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -229,6 +246,7 @@ def comuna_create(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response({'error': 'No tienes permisos para crear una nueva comuna'}, status=status.HTTP_403_FORBIDDEN)
+
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -246,6 +264,7 @@ def comuna_update(request, pk):
     except Comuna.DoesNotExist:
         return Response({'error': 'La comuna no existe'}, status=status.HTTP_404_NOT_FOUND)
 
+
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def comuna_delete(request, pk):
@@ -259,7 +278,7 @@ def comuna_delete(request, pk):
     except Comuna.DoesNotExist:
         return Response({'error': 'La comuna no existe'}, status=status.HTTP_404_NOT_FOUND)
 
-#Puestos de votación
+# Puestos de votación
 
 
 @api_view(['GET'])
@@ -272,6 +291,7 @@ def puesto_list(request):
     else:
         return Response({'error': 'No tienes permisos para acceder a esta información'}, status=status.HTTP_403_FORBIDDEN)
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def puesto_detail(request, pk):
@@ -281,6 +301,7 @@ def puesto_detail(request, pk):
         return Response(serializer.data)
     except PuestoVotacion.DoesNotExist:
         return Response({'error': 'El puesto de votación no existe'}, status=status.HTTP_404_NOT_FOUND)
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -294,13 +315,15 @@ def puesto_create(request):
     else:
         return Response({'error': 'No tienes permisos para crear un nuevo puesto de votación'}, status=status.HTTP_403_FORBIDDEN)
 
+
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def puesto_update(request, pk):
     try:
         puesto_votacion = PuestoVotacion.objects.get(pk=pk)
         if hasattr(request.user, 'userprofile') and request.user.userprofile.is_lider:
-            serializer = PuestoVotacionSerializer(puesto_votacion, data=request.data)
+            serializer = PuestoVotacionSerializer(
+                puesto_votacion, data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data)
@@ -309,6 +332,7 @@ def puesto_update(request, pk):
             return Response({'error': 'No tienes permisos para actualizar este puesto de votación'}, status=status.HTTP_403_FORBIDDEN)
     except PuestoVotacion.DoesNotExist:
         return Response({'error': 'El puesto de votación no existe'}, status=status.HTTP_404_NOT_FOUND)
+
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])

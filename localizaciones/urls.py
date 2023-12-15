@@ -3,16 +3,22 @@ from . import views
 
 urlpatterns = [
     path('departamentos/', views.departamento_list, name='departamento-list'),
-    path('departamentos/<int:pk>/', views.departamento_detail, name='departamento-detail'),
-    path('departamentos/create/', views.departamento_create, name='departamento-create'),
-    path('departamentos/update/<int:pk>/', views.departamento_update, name='departamento-update'),
-    path('departamentos/delete/<int:pk>/', views.departamento_delete, name='departamento-delete'),
+    path('departamentos/<int:pk>/', views.departamento_detail,
+         name='departamento-detail'),
+    path('departamentos/create/', views.departamento_create,
+         name='departamento-create'),
+    path('departamentos/update/<int:pk>/',
+         views.departamento_update, name='departamento-update'),
+    path('departamentos/delete/<int:pk>/',
+         views.departamento_delete, name='departamento-delete'),
 
     path('municipios/', views.municipio_list, name='municipio-list'),
     path('municipios/<int:pk>/', views.municipio_detail, name='municipio-detail'),
     path('municipios/create/', views.municipio_create, name='municipio-create'),
-    path('municipios/update/<int:pk>/', views.municipio_update, name='municipio-update'),
-    path('municipios/delete/<int:pk>/', views.municipio_delete, name='municipio-delete'),
+    path('municipios/update/<int:pk>/',
+         views.municipio_update, name='municipio-update'),
+    path('municipios/delete/<int:pk>/',
+         views.municipio_delete, name='municipio-delete'),
 
     path('barrios/', views.barrio_list, name='barrio-list'),
     path('barrios/<int:pk>/', views.barrio_detail, name='barrio-detail'),

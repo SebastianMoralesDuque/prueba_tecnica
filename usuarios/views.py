@@ -2,15 +2,11 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-from .serializers import LiderCreateSerializer
+from .serializers import LiderCreateSerializer, CapitanSerializer
 from django.contrib.auth import authenticate, login
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from rest_framework import status
-from .serializers import LiderCreateSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
+from .models import Capitan
 
 
 @api_view(['POST'])
@@ -58,3 +54,51 @@ def lider_login(request):
             return Response({'error': 'Credenciales inválidas'}, status=401)
 
     return Response({'error': 'Método no permitido'}, status=405)
+
+#capitanes
+@api_view(['GET'])
+def listar_capitanes(request):
+    capitanes = Capitan.objects.all()
+    serializer = CapitanSerializer(capitanes, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def crear_capitan(request):
+    serializer = CapitanSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def ver_capitan(request, pk):
+    try:
+        capitan = Capitan.objects.get(pk=pk)
+    except Capitan.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = CapitanSerializer(capitan)
+    return Response(serializer.data)
+
+@api_view(['PUT'])
+def actualizar_capitan(request, pk):
+    try:
+        capitan = Capitan.objects.get(pk=pk)
+    except Capitan.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = CapitanSerializer(capitan, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def eliminar_capitan(request, pk):
+    try:
+        capitan = Capitan.objects.get(pk=pk)
+    except Capitan.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    capitan.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)

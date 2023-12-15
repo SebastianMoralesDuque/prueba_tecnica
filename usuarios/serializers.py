@@ -1,30 +1,29 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import UserProfile, Lider
+from .models import Capitan, UserProfile, Lider
+
 
 class LiderCreateSerializer(serializers.Serializer):
-    username = serializers.CharField(max_length=150)  # Nuevo campo para el username
+    username = serializers.CharField(max_length=150)
     nombres = serializers.CharField(max_length=100)
     apellidos = serializers.CharField(max_length=100)
     ciudad = serializers.CharField(max_length=100)
     direccion = serializers.CharField(max_length=255)
     foto_perfil = serializers.CharField(max_length=255)
-    password = serializers.CharField(max_length=128, write_only=True)  # Campo para la contraseña
+    password = serializers.CharField(
+        max_length=128, write_only=True)
 
     def create(self, validated_data):
         request = self.context.get('request')
         superusuario = request.user if request else None
 
         if superusuario:
-            # Crear el User
-            user = User.objects.create(username=validated_data['username'])  # Utiliza el nuevo campo username
-            user.set_password(validated_data['password'])  # Establecer la contraseña
+            user = User.objects.create(username=validated_data['username'])
+            user.set_password(validated_data['password'])
             user.save()
 
-            # Crear el UserProfile asociado al User
             user_profile = UserProfile.objects.create(user=user, is_lider=True)
 
-            # Crear el Lider asociado al UserProfile
             lider = Lider.objects.create(
                 user_profile=user_profile,
                 superusuario=superusuario,
@@ -36,4 +35,11 @@ class LiderCreateSerializer(serializers.Serializer):
             )
             return lider
         else:
-            raise serializers.ValidationError("No se puede crear el líder sin un superusuario.")
+            raise serializers.ValidationError(
+                "No se puede crear el líder sin un superusuario.")
+
+
+class CapitanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Capitan
+        fields = '__all__'
