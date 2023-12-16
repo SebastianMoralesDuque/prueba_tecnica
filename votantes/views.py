@@ -26,11 +26,10 @@ def registrar_votante(request):
     serializer = VotanteSerializer(data=votante_data)
 
     if serializer.is_valid():
-        serializer.save()
-        return Response({'message': 'Votante registrado correctamente'}, status=status.HTTP_201_CREATED)
+        votante = serializer.save()
+        return Response({'id_votante': votante.id_votante, 'message': 'Votante registrado correctamente'}, status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

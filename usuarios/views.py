@@ -32,6 +32,27 @@ def registrar_lider(request):
     return Response({'error': 'Método no permitido'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 @api_view(['POST'])
+def registrar_admin(request):
+    # Obtener datos del cuerpo de la solicitud
+    username = request.data.get('username')
+    email = request.data.get('email')
+    password = request.data.get('password')
+
+    # Verificar si los datos requeridos se proporcionaron
+    if not (username and email and password):
+        return Response({'message': 'Se requieren username, email y password'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Verificar si el username ya existe
+    if User.objects.filter(username=username).exists():
+        return Response({'message': 'El nombre de usuario ya está en uso'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Crear el superusuario 'admin'
+    admin = User.objects.create_superuser(username, email, password)
+
+    return Response({'message': f'Administrador {username} creado exitosamente'}, status=status.HTTP_201_CREATED)
+
+
+@api_view(['POST'])
 def lider_login(request):
     if request.method == 'POST':
         username = request.data.get('username', '')
