@@ -1,7 +1,6 @@
-Documentación de la API
-Descripción General
+# Documentación de la API
 
-Este proyecto API utiliza Django y consta de tres aplicaciones principales:
+Este proyecto utiliza Django y consta de tres aplicaciones principales:
 
     usuarios
     localizaciones
