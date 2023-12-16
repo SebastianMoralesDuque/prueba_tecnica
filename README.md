@@ -12,7 +12,7 @@ Usuarios
 Rutas:
 
     Administradores:
-      /auth/admin/login/: Autenticación de administradores.
+      /auth/admin/login/: Inicio de sesión de administradores.
       /auth/admin/refresh/: Actualización del token de administrador.
       /auth/admin/registrar/: Registro de administradores.
       
